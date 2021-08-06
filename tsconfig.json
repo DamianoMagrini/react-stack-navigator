@@ -1,0 +1,23 @@
+{
+	"files": ["src/index.ts"],
+	"exclude": ["node_modules"],
+	"compilerOptions": {
+		"outDir": "lib",
+		"declaration": true,
+
+		"module": "CommonJS",
+		"target": "ES6",
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"resolveJsonModule": true,
+
+		"jsx": "react",
+
+		"strict": true,
+		"allowJs": false,
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true
+	}
+}

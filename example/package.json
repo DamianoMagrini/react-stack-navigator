@@ -1,0 +1,23 @@
+{
+	"name": "react-stack-navigator-example",
+	"description": "A native-like stack navigator for React DOM, inspired by Flutter's Navigator v1",
+	"authors": "Damiano Magrini <damiano.magrini@gmail.com>",
+	"version": "0.0.0",
+	"scripts": {
+		"dev": "snowpack dev",
+		"build": "snowpack build"
+	},
+	"dependencies": {
+		"react-stack-navigator": "file:..",
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2"
+	},
+	"devDependencies": {
+		"@snowpack/plugin-react-refresh": "^2.5.0",
+		"@snowpack/plugin-typescript": "^1.2.1",
+		"@types/react": "^17.0.15",
+		"@types/react-dom": "^17.0.9",
+		"snowpack": "^3.8.3",
+		"typescript": "^4.3.5"
+	}
+}
