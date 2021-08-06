@@ -1,5 +1,11 @@
 # React Stack Navigator
 
+[![npm package][npm-badge]][npm] ![build status][build-badge]
+
+[npm]: https://www.npmjs.com/package/react-stack-navigator
+[npm-badge]: https://badgen.net/npm/v/react-stack-navigator
+[build-badge]: https://app.buddy.works/damianomagrini/react-stack-navigator/pipelines/pipeline/341819/badge.svg?token=e5daa5d3e303ec3297c953e5ba15c55dfd4e9b4d446a68a5572422a54db02fb1
+
 A stack navigator for React inspired by Flutter's `Navigator` API and entirely based on pushing and popping.
 
 
