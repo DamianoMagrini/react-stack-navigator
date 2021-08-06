@@ -23,7 +23,7 @@ With Yarn,
 yarn add react-stack-navigator
 ```
 
-TypeScript typings included out of the box! 📦
+TypeScript types are included out of the box! 📦
 
 
 ## Usage
