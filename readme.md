@@ -80,4 +80,4 @@ Since navigating the stack does not alter the URL, you can include as many stack
 
 ## Thanks
 
-Big thanks to [Flutter](https://flutter.dev/) for the inspiration! And thanks to [React Training](https://reacttraining.com/) for their awesome [`history`](https://github.com/ReactTraining/history/) module.
+Big thanks to [Flutter](https://flutter.dev/) for the inspiration!

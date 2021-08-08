@@ -1,5 +1,4 @@
 import React, { ReactChild } from 'react';
-import { history } from './history';
 import { RoutingFunctionsContext } from './RoutingFunctionsContext';
 import { StackRoute } from './StackRoute';
 
@@ -55,13 +54,13 @@ export class StackNavigator extends React.Component<StackNavigatorProps, StackNa
 	};
 
 	private push = (child: ReactChild) => {
-		history.push(history.location.pathname);
+		window.history.pushState(null, '', window.location.pathname);
 		this.lastHistoryIndex++;
 		return new Promise<any>((resolve) => this.pushRoute({ child, resolve }));
 	};
 	private pop = (result?: any) => {
 		this.lastPopWasProgrammatic = true;
-		history.back();
+		window.history.back();
 		this.popRoute(result);
 	};
 
