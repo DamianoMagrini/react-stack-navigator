@@ -28,23 +28,13 @@ TypeScript types are included out of the box! 📦
 
 ## Usage
 
-Using the library is quite simple: just include a `<StackNavigator>` component, specifying the `root` route.
+Using the library is quite simple: just include a `<StackNavigator>` component, specifying the `root` route (i.e., the route at the bottom of the stack).
 
 ```jsx
 import { StackNavigator } from 'react-stack-navigator';
 
 export const App = () => {
 	return <StackNavigator root={<HomePage />} />;
-};
-```
-
-You can also map paths to `routes`, so that if your app is started from a URL other than `/`, the route you specify will be loaded over the `root` route.
-
-```jsx
-import { StackNavigator } from 'react-stack-navigator';
-
-export const App = () => {
-	return <StackNavigator root={<HomePage />} routes={{ '/profile': <ProfilePage /> }} />;
 };
 ```
 
@@ -56,7 +46,7 @@ import { RoutingFunctionsContext } from 'react-stack-navigator';
 export const ScreenA = () => {
 	const { push } = useContext(RoutingFunctionsContext);
 
-	return <button onClick={() => push('/b', <ScreenB />)}>Push!</button>;
+	return <button onClick={() => push(<ScreenB />)}>Push!</button>;
 };
 ```
 
@@ -70,7 +60,7 @@ export const ScreenA = () => {
 
 	return (
 		<button onClick={async () => {
-			const result = await push('/b', <ScreenB />)
+			const result = await push(<ScreenB />)
 			console.log('Hello, ' + result); // Hello, World!
 		}}>Push!</button>
 	);
@@ -83,7 +73,11 @@ export const ScreenB: React.FC = () => {
 };
 ```
 
+### With React Router
+
+Since navigating the stack does not alter the URL, you can include as many stack navigators as you want in your React Router routes, without changing a single line of code.
+
 
 ## Thanks
 
-Big thanks to [Flutter](https://flutter.dev/) for the inspiration! And thanks to [React Training](https://reacttraining.com/) for their awesome [`history`](https://github.com/ReactTraining/history/) module.
+Big thanks to [Flutter](https://flutter.dev/) for the inspiration!

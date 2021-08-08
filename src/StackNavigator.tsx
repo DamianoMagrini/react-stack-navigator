@@ -1,73 +1,79 @@
-import React, { ComponentType, ReactChild, useState } from 'react';
-import { history } from './history';
+import React, { ReactChild } from 'react';
 import { RoutingFunctionsContext } from './RoutingFunctionsContext';
 import { StackRoute } from './StackRoute';
 
 interface StackEntry {
 	child: ReactChild;
 	resolve: (result: any) => void;
-	path: string;
-	isInitial: boolean;
 }
 
 export interface StackNavigatorProps {
 	/**
-	 * The root route (usually the home page or such).
+	 * The route at the bottom of the stack
 	 */
 	root: ReactChild;
-	/**
-	 * An object mapping URL paths to routes.
-	 */
-	routes?: Record<string, ComponentType>;
 }
 
-export const StackNavigator: React.FC<StackNavigatorProps> = ({ root, routes }) => {
-	const [stack, updateStack] = useState<StackEntry[]>([
-		{
-			child: root,
-			resolve: () => {},
-			path: '/',
-			isInitial: true,
-		},
-		// TODO support dynamic initial pathnames, e.g. /users/:userId
-		...(history.location.pathname in (routes ?? {})
-			? [
-					{
-						child: React.createElement(routes![history.location.pathname]),
-						resolve: () => {},
-						path: history.location.pathname,
-						isInitial: true,
-					},
-			  ]
-			: []),
-	]);
+interface StackNavigatorState {
+	stack: StackEntry[];
+}
 
-	const pushRoute = (route: StackEntry) => {
-		updateStack((_routes) => [..._routes, route]);
+export class StackNavigator extends React.Component<StackNavigatorProps, StackNavigatorState> {
+	state: StackNavigatorState = { stack: [] };
+	private lastHistoryIndex = window.history.state?.idx ?? 0;
+	private lastPopWasProgrammatic = false;
+
+	componentDidMount() {
+		window.addEventListener('popstate', this.onPopState);
+	}
+	componentWillUnmount() {
+		return () => window.removeEventListener('popstate', this.onPopState);
+	}
+
+	private onPopState = (ev: PopStateEvent) => {
+		if (this.lastPopWasProgrammatic) {
+			this.lastPopWasProgrammatic = false;
+			return;
+		}
+		const { stack } = this.state;
+		const historyIndex: number = ev.state?.idx ?? 0;
+		if (historyIndex < this.lastHistoryIndex && stack.length > 0) this.popRoute(null);
+		this.lastHistoryIndex = historyIndex;
 	};
 
-	const pop = (result: any) => {
+	private pushRoute = (route: StackEntry) => {
+		this.setState(({ stack }) => ({ stack: [...stack, route] }));
+	};
+	private popRoute = (result?: any) => {
+		const { stack } = this.state;
 		const currentRoute = stack[stack.length - 1];
-		if (currentRoute.isInitial) history.replace('/');
-		else history.back();
-		updateStack((_stack) => {
-			history.replace(stack[stack.length - 2].path);
+		this.setState(({ stack: _stack }) => {
 			currentRoute.resolve(result);
-			return _stack.slice(0, _stack.length - 1);
+			return { stack: _stack.slice(0, _stack.length - 1) };
 		});
 	};
-	const push = (path: string, child: ReactChild) => {
-		history.push(path);
-		return new Promise<any>((resolve) => pushRoute({ child, resolve, path, isInitial: false }));
+
+	private push = (child: ReactChild) => {
+		window.history.pushState(null, '', window.location.pathname);
+		this.lastHistoryIndex++;
+		return new Promise<any>((resolve) => this.pushRoute({ child, resolve }));
+	};
+	private pop = (result?: any) => {
+		this.lastPopWasProgrammatic = true;
+		window.history.back();
+		this.popRoute(result);
 	};
 
-	return (
-		<RoutingFunctionsContext.Provider value={{ push, pop }}>
-			{stack.map((route, i) => (
-				<StackRoute key={`stack-route-${i}`} index={i + 1000}>
-					{route.child}
-				</StackRoute>
-			))}
-		</RoutingFunctionsContext.Provider>
-	);
-};
+	render() {
+		return (
+			<RoutingFunctionsContext.Provider value={{ push: this.push, pop: this.pop }}>
+				{this.props.root}
+				{this.state.stack.map((route, i) => (
+					<StackRoute key={`stack-route-${i}`} index={i + 1000}>
+						{route.child}
+					</StackRoute>
+				))}
+			</RoutingFunctionsContext.Provider>
+		);
+	}
+}

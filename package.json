@@ -3,15 +3,16 @@
 	"description": "A native-like stack navigator for React DOM, inspired by Flutter's Navigator v1",
 	"authors": "Damiano Magrini <damiano.magrini@gmail.com>",
 	"license": "CC-BY-SA-4.0",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"main": "lib/index.js",
 	"types": "lib/index.d.ts",
+	"repository": "DamianoMagrini/react-stack-navigator",
+	"homepage": "https://github.com/DamianoMagrini/react-stack-navigator#readme",
 	"scripts": {
 		"build": "tsc"
 	},
 	"dependencies": {
 		"@types/react": ">=16.0.0",
-		"history": "^5.0.0",
 		"react": ">=16.0.0",
 		"react-dom": ">=16.0.0"
 	},
