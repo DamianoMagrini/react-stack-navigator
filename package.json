@@ -6,6 +6,8 @@
 	"version": "0.0.1",
 	"main": "lib/index.js",
 	"types": "lib/index.d.ts",
+	"repository": "DamianoMagrini/react-stack-navigator",
+	"homepage": "https://github.com/DamianoMagrini/react-stack-navigator#readme",
 	"scripts": {
 		"build": "tsc"
 	},
