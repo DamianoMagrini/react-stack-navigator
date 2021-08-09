@@ -15,6 +15,7 @@ export const StackRoute: React.FC<StackRouteProps> = ({ index, children }) => {
 				bottom: 0,
 				left: 0,
 				zIndex: index,
+				overflow: 'auto',
 			}}>
 			{children}
 		</div>,
