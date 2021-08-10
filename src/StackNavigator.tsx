@@ -22,7 +22,7 @@ interface StackNavigatorState {
 
 export class StackNavigator extends React.Component<StackNavigatorProps, StackNavigatorState> {
 	state: StackNavigatorState = { stack: [] };
-	private lastHistoryIndex = window.history.state?.idx ?? 0;
+	private lastHistoryIndex = 0;
 	private lastPopWasProgrammatic = false;
 
 	componentDidMount() {
@@ -38,7 +38,7 @@ export class StackNavigator extends React.Component<StackNavigatorProps, StackNa
 			return;
 		}
 		const { stack } = this.state;
-		const historyIndex: number = ev.state?.idx ?? 0;
+		const historyIndex: number = Number(window.location.hash.slice(1));
 		if (historyIndex < this.lastHistoryIndex && stack.length > 0) this.popRoute(null);
 		this.lastHistoryIndex = historyIndex;
 	};
@@ -56,8 +56,9 @@ export class StackNavigator extends React.Component<StackNavigatorProps, StackNa
 	};
 
 	private push = (child: ReactChild, options?: RouteOptions) => {
-		window.history.pushState(null, '', window.location.pathname);
+		this.lastPopWasProgrammatic = true;
 		this.lastHistoryIndex++;
+		window.location.hash = this.lastHistoryIndex.toString();
 		return new Promise<any>((resolve) =>
 			this.pushRoute({
 				child,
