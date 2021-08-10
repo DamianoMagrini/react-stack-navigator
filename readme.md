@@ -101,7 +101,7 @@ export const ScreenB: React.FC = () => {
 
 ### With React Router
 
-Since navigating the stack does not alter the URL, you can include as many stack navigators as you want in your React Router routes, without changing a single line of code.
+Since navigating the stack does not alter the URL pathname, you can include as many stack navigators as you wish in your React Router routes, without changing a single line of code. Or, well, this is as long as you're not using a hash-based history: if you are, this library most likely doesn't suit your needs.
 
 
 ## Thanks
