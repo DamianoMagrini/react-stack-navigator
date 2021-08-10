@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react';
-import { RoutingFunctionsContext } from 'react-stack-navigator';
+import React, { useState } from 'react';
+import { useStackNavigator } from 'react-stack-navigator';
 import { ScreenB } from './ScreenB';
 
 export const ScreenA: React.FC = () => {
-	const { push } = useContext(RoutingFunctionsContext)!;
+	const { push } = useStackNavigator();
 	const [result, setResult] = useState<any>(null);
 
 	return (
@@ -11,7 +11,7 @@ export const ScreenA: React.FC = () => {
 			<h1>Screen A</h1>
 			<button
 				onClick={async () => {
-					const _result = await push(<ScreenB />);
+					const _result = await push(<ScreenB />, { isModal: true, title: 'Route title :)' });
 					setResult(_result);
 				}}>
 				Push!

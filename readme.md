@@ -41,10 +41,10 @@ export const App = () => {
 Then, inside your components, you can `push` and `pop` routes using the functions provided by `RoutingFunctionsContext`.
 
 ```jsx
-import { RoutingFunctionsContext } from 'react-stack-navigator';
+import { useStackNavigator } from 'react-stack-navigator';
 
 export const ScreenA = () => {
-	const { push } = useContext(RoutingFunctionsContext);
+	const { push } = useStackNavigator();
 
 	return <button onClick={() => push(<ScreenB />)}>Push!</button>;
 };
@@ -53,10 +53,10 @@ export const ScreenA = () => {
 This is very similar to Flutter's `Navigator`: indeed, when you `pop` a route, you can pass in a result, which will be returned asynchronously by the last `push` function.
 
 ```jsx
-import { RoutingFunctionsContext } from 'react-stack-navigator';
+import { useStackNavigator } from 'react-stack-navigator';
 
 export const ScreenA = () => {
-	const { push } = useContext(RoutingFunctionsContext);
+	const { push } = useStackNavigator();
 
 	return (
 		<button onClick={async () => {
@@ -67,15 +67,41 @@ export const ScreenA = () => {
 };
 
 export const ScreenB: React.FC = () => {
-	const { pop } = useContext(RoutingFunctionsContext);
+	const { pop } = useStackNavigator();
 
 	return <button onClick={() => pop('World!')}>Pop!</button>;
 };
 ```
 
+### Passing in options
+
+By passing a second argument to the `push` function, you can mark a route as modal or give it a title. Both these options are available to the child route.
+
+```jsx
+import { useStackNavigator } from 'react-stack-navigator';
+
+export const ScreenA = () => {
+	const { push } = useStackNavigator();
+
+	return (
+		<button onClick={() => push(<ScreenB />, {
+			isModal: true,
+			title: 'Screen B',
+		})}>Push!</button>
+	);
+};
+
+export const ScreenB: React.FC = () => {
+	// The given options are accessible to the child route
+	const { pop, isModal, routeTitle } = useStackNavigator();
+
+	return <button onClick={() => pop()}>Pop!</button>;
+};
+```
+
 ### With React Router
 
-Since navigating the stack does not alter the URL, you can include as many stack navigators as you want in your React Router routes, without changing a single line of code.
+Since navigating the stack does not alter the URL pathname, you can include as many stack navigators as you wish in your React Router routes, without changing a single line of code. Or, well, this is as long as you're not using a hash-based history: if you are, this library most likely doesn't suit your needs.
 
 
 ## Thanks

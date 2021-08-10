@@ -1,10 +1,12 @@
 import React, { ReactChild } from 'react';
-import { RoutingFunctionsContext } from './RoutingFunctionsContext';
+import { RouteOptions, StackNavigatorContext } from './StackNavigatorContext';
 import { StackRoute } from './StackRoute';
 
 interface StackEntry {
 	child: ReactChild;
 	resolve: (result: any) => void;
+	isModal: boolean;
+	title?: string;
 }
 
 export interface StackNavigatorProps {
@@ -20,7 +22,7 @@ interface StackNavigatorState {
 
 export class StackNavigator extends React.Component<StackNavigatorProps, StackNavigatorState> {
 	state: StackNavigatorState = { stack: [] };
-	private lastHistoryIndex = window.history.state?.idx ?? 0;
+	private lastHistoryIndex = 0;
 	private lastPopWasProgrammatic = false;
 
 	componentDidMount() {
@@ -36,7 +38,7 @@ export class StackNavigator extends React.Component<StackNavigatorProps, StackNa
 			return;
 		}
 		const { stack } = this.state;
-		const historyIndex: number = ev.state?.idx ?? 0;
+		const historyIndex: number = Number(window.location.hash.slice(1));
 		if (historyIndex < this.lastHistoryIndex && stack.length > 0) this.popRoute(null);
 		this.lastHistoryIndex = historyIndex;
 	};
@@ -53,10 +55,18 @@ export class StackNavigator extends React.Component<StackNavigatorProps, StackNa
 		});
 	};
 
-	private push = (child: ReactChild) => {
-		window.history.pushState(null, '', window.location.pathname);
+	private push = (child: ReactChild, options?: RouteOptions) => {
+		this.lastPopWasProgrammatic = true;
 		this.lastHistoryIndex++;
-		return new Promise<any>((resolve) => this.pushRoute({ child, resolve }));
+		window.location.hash = this.lastHistoryIndex.toString();
+		return new Promise<any>((resolve) =>
+			this.pushRoute({
+				child,
+				resolve,
+				isModal: options?.isModal ?? false,
+				title: options?.title,
+			}),
+		);
 	};
 	private pop = (result?: any) => {
 		this.lastPopWasProgrammatic = true;
@@ -66,14 +76,30 @@ export class StackNavigator extends React.Component<StackNavigatorProps, StackNa
 
 	render() {
 		return (
-			<RoutingFunctionsContext.Provider value={{ push: this.push, pop: this.pop }}>
-				{this.props.root}
+			<>
+				<StackNavigatorContext.Provider
+					value={{
+						push: this.push,
+						pop: this.pop,
+						canPop: false,
+						isModal: false,
+					}}>
+					{this.props.root}
+				</StackNavigatorContext.Provider>
 				{this.state.stack.map((route, i) => (
-					<StackRoute key={`stack-route-${i}`} index={i + 1000}>
-						{route.child}
-					</StackRoute>
+					<StackNavigatorContext.Provider
+						key={`stack-route-${i}`}
+						value={{
+							push: this.push,
+							pop: this.pop,
+							canPop: true,
+							isModal: route.isModal,
+							routeTitle: route.title,
+						}}>
+						<StackRoute index={i + 1000}>{route.child}</StackRoute>
+					</StackNavigatorContext.Provider>
 				))}
-			</RoutingFunctionsContext.Provider>
+			</>
 		);
 	}
 }
