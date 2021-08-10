@@ -1,10 +1,12 @@
 import React, { ReactChild } from 'react';
-import { RoutingFunctionsContext } from './RoutingFunctionsContext';
+import { RouteOptions, StackNavigatorContext } from './StackNavigatorContext';
 import { StackRoute } from './StackRoute';
 
 interface StackEntry {
 	child: ReactChild;
 	resolve: (result: any) => void;
+	isModal: boolean;
+	title?: string;
 }
 
 export interface StackNavigatorProps {
@@ -53,10 +55,17 @@ export class StackNavigator extends React.Component<StackNavigatorProps, StackNa
 		});
 	};
 
-	private push = (child: ReactChild) => {
+	private push = (child: ReactChild, options?: RouteOptions) => {
 		window.history.pushState(null, '', window.location.pathname);
 		this.lastHistoryIndex++;
-		return new Promise<any>((resolve) => this.pushRoute({ child, resolve }));
+		return new Promise<any>((resolve) =>
+			this.pushRoute({
+				child,
+				resolve,
+				isModal: options?.isModal ?? false,
+				title: options?.title,
+			}),
+		);
 	};
 	private pop = (result?: any) => {
 		this.lastPopWasProgrammatic = true;
@@ -66,14 +75,30 @@ export class StackNavigator extends React.Component<StackNavigatorProps, StackNa
 
 	render() {
 		return (
-			<RoutingFunctionsContext.Provider value={{ push: this.push, pop: this.pop }}>
-				{this.props.root}
+			<>
+				<StackNavigatorContext.Provider
+					value={{
+						push: this.push,
+						pop: this.pop,
+						canPop: false,
+						isModal: false,
+					}}>
+					{this.props.root}
+				</StackNavigatorContext.Provider>
 				{this.state.stack.map((route, i) => (
-					<StackRoute key={`stack-route-${i}`} index={i + 1000}>
-						{route.child}
-					</StackRoute>
+					<StackNavigatorContext.Provider
+						key={`stack-route-${i}`}
+						value={{
+							push: this.push,
+							pop: this.pop,
+							canPop: true,
+							isModal: route.isModal,
+							routeTitle: route.title,
+						}}>
+						<StackRoute index={i + 1000}>{route.child}</StackRoute>
+					</StackNavigatorContext.Provider>
 				))}
-			</RoutingFunctionsContext.Provider>
+			</>
 		);
 	}
 }
