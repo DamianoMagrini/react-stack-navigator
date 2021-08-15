@@ -22,9 +22,11 @@
 		"build": "tsc"
 	},
 	"dependencies": {
-		"@types/react": ">=16.0.0",
-		"react": ">=16.0.0",
-		"react-dom": ">=16.0.0"
+		"@types/react": ">=16"
+	},
+	"peerDependencies": {
+		"react": ">=16",
+		"react-dom": ">=16"
 	},
 	"devDependencies": {
 		"@types/react-dom": ">=16.0.0",
