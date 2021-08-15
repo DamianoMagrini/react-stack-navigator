@@ -1,6 +1,8 @@
 import React, { ReactChild } from 'react';
+import { createPortal } from 'react-dom';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import '../src/styles.css';
 import { RouteOptions, StackNavigatorContext } from './StackNavigatorContext';
-import { StackRoute } from './StackRoute';
 
 interface StackEntry {
 	child: ReactChild;
@@ -86,19 +88,28 @@ export class StackNavigator extends React.Component<StackNavigatorProps, StackNa
 					}}>
 					{this.props.root}
 				</StackNavigatorContext.Provider>
-				{this.state.stack.map((route, i) => (
-					<StackNavigatorContext.Provider
-						key={`stack-route-${i}`}
-						value={{
-							push: this.push,
-							pop: this.pop,
-							canPop: true,
-							isModal: route.isModal,
-							routeTitle: route.title,
-						}}>
-						<StackRoute index={i + 1000}>{route.child}</StackRoute>
-					</StackNavigatorContext.Provider>
-				))}
+
+				{createPortal(
+					<TransitionGroup>
+						{this.state.stack.map((route, i) => (
+							<CSSTransition key={`stack-route-${i}`} timeout={150} classNames='rsn-route'>
+								<StackNavigatorContext.Provider
+									value={{
+										push: this.push,
+										pop: this.pop,
+										canPop: true,
+										isModal: route.isModal,
+										routeTitle: route.title,
+									}}>
+									<div className='rsn-route' style={{ zIndex: i + 1000 }}>
+										{route.child}
+									</div>
+								</StackNavigatorContext.Provider>
+							</CSSTransition>
+						))}
+					</TransitionGroup>,
+					document.body,
+				)}
 			</>
 		);
 	}
