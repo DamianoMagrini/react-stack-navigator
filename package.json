@@ -1,6 +1,7 @@
 {
 	"name": "react-stack-navigator",
 	"description": "A native-like stack navigator for React DOM, inspired by Flutter's Navigator v1",
+	"type": "module",
 	"keywords": [
 		"react",
 		"router",
@@ -22,7 +23,8 @@
 		"build": "tsc"
 	},
 	"dependencies": {
-		"@types/react": ">=16"
+		"@types/react": ">=16",
+		"react-transition-group": "^4.4.2"
 	},
 	"peerDependencies": {
 		"react": ">=16",
@@ -30,6 +32,7 @@
 	},
 	"devDependencies": {
 		"@types/react-dom": ">=16.0.0",
+		"@types/react-transition-group": "^4.4.2",
 		"typescript": "^4.3.5"
 	}
 }

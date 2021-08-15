@@ -5,7 +5,7 @@
 		"outDir": "lib",
 		"declaration": true,
 
-		"module": "CommonJS",
+		"module": "ES6",
 		"target": "ES6",
 		"moduleResolution": "node",
 		"allowSyntheticDefaultImports": true,
