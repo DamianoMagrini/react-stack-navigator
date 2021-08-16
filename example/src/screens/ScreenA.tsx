@@ -11,7 +11,7 @@ export const ScreenA: React.FC = () => {
 			<h1>Screen A</h1>
 			<button
 				onClick={async () => {
-					const _result = await push(<ScreenB />, { isModal: true, title: 'Route title :)' });
+					const _result = await push(<ScreenB />, true);
 					setResult(_result);
 				}}>
 				Push!
