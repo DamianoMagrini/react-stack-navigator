@@ -84,7 +84,10 @@ export class StackNavigator extends React.Component<StackNavigatorProps, StackNa
 				{createPortal(
 					<TransitionGroup>
 						{this.state.stack.map((route, i) => (
-							<CSSTransition key={`stack-route-${i}`} timeout={150} classNames='rsn-route'>
+							<CSSTransition
+								key={`stack-route-${i}`}
+								timeout={150}
+								classNames={route.isModal ? 'rsn-modal-route' : 'rsn-route'}>
 								<StackNavigatorContext.Provider
 									value={{
 										push: this.push,
