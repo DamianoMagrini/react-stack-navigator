@@ -31,7 +31,7 @@ export class StackNavigator extends React.Component<StackNavigatorProps, StackNa
 		window.addEventListener('popstate', this.onPopState);
 	}
 	componentWillUnmount() {
-		return () => window.removeEventListener('popstate', this.onPopState);
+		window.removeEventListener('popstate', this.onPopState);
 	}
 
 	private onPopState = (ev: PopStateEvent) => {
