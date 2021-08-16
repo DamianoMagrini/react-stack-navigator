@@ -38,7 +38,7 @@ export const App = () => {
 };
 ```
 
-Then, inside your components, you can `push` and `pop` routes using the functions provided by `RoutingFunctionsContext`.
+Then, inside your components, you can `push` and `pop` routes using the functions provided by the `useStackNavigator` hook (or, if you prefer, the `RoutingFunctionsContext` context).
 
 ```jsx
 import { useStackNavigator } from 'react-stack-navigator';
@@ -73,9 +73,9 @@ export const ScreenB: React.FC = () => {
 };
 ```
 
-### Passing in options
+### Modal and non-modal routes
 
-By passing a second argument to the `push` function, you can mark a route as modal or give it a title. Both these options are available to the child route.
+By passing a second argument to the `push` function, you can mark a route as modal. This option will affect the route's animation and will be available to the child route.
 
 ```jsx
 import { useStackNavigator } from 'react-stack-navigator';
@@ -84,16 +84,13 @@ export const ScreenA = () => {
 	const { push } = useStackNavigator();
 
 	return (
-		<button onClick={() => push(<ScreenB />, {
-			isModal: true,
-			title: 'Screen B',
-		})}>Push!</button>
+		<button onClick={() => push(<ScreenB />, true)}>Push!</button>
 	);
 };
 
 export const ScreenB: React.FC = () => {
 	// The given options are accessible to the child route
-	const { pop, isModal, routeTitle } = useStackNavigator();
+	const { pop, isModal } = useStackNavigator();
 
 	return <button onClick={() => pop()}>Pop!</button>;
 };
@@ -101,7 +98,7 @@ export const ScreenB: React.FC = () => {
 
 ### With React Router
 
-Since navigating the stack does not alter the URL pathname, you can include as many stack navigators as you wish in your React Router routes, without changing a single line of code. Or, well, this is as long as you're not using a hash-based history: if you are, this library most likely doesn't suit your needs.
+Since navigating the stack does not alter the URL pathname but only the hash, you can include as many stack navigators as you wish in your React Router routes, without changing a single line of code—as you're not using a hash-based history: if you are, this library most likely doesn't suit your needs.
 
 
 ## Thanks

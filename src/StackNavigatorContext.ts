@@ -1,16 +1,11 @@
 import { createContext, ReactChild } from 'react';
 
-export interface RouteOptions {
-	isModal: boolean;
-	title?: string;
-}
-
 export interface StackNavigatorContextData {
 	/**
 	 * Push a route to the stack and returns its result (if any)
 	 * @param child The route's element
 	 */
-	push(child: ReactChild, options?: RouteOptions): Promise<any>;
+	push(child: ReactChild, isModal?: boolean): Promise<any>;
 	/**
 	 * Pop the route at the top of the stack, optionally returning a result
 	 * @param result The route's result (if any)
@@ -25,10 +20,6 @@ export interface StackNavigatorContextData {
 	 * Whether the route is modal
 	 */
 	isModal: boolean;
-	/**
-	 * The title of the route, optionally specified in the `push` function
-	 */
-	routeTitle?: string;
 }
 
 export const StackNavigatorContext = createContext<StackNavigatorContextData>({

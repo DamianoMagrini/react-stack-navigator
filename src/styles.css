@@ -9,15 +9,38 @@
 
 .rsn-route-enter {
 	opacity: 0;
+	transform: translateX(8vw);
 }
 .rsn-route-enter-active {
 	opacity: 1;
-	transition: opacity 150ms ease-out;
+	transform: translateX(0);
+	transition: opacity 210ms cubic-bezier(0, 0, 0.2, 1), transform 210ms cubic-bezier(0, 0, 0.2, 1);
 }
 .rsn-route-exit {
 	opacity: 1;
+	transform: translateX(0);
 }
 .rsn-route-exit-active {
 	opacity: 0;
-	transition: opacity 150ms ease-out;
+	transform: translateX(8vw);
+	transition: opacity 210ms cubic-bezier(0, 0, 0.2, 1), transform 210ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.rsn-modal-route-enter {
+	opacity: 0;
+	transform: scale(0.92);
+}
+.rsn-modal-route-enter-active {
+	opacity: 1;
+	transform: scale(1);
+	transition: opacity 210ms cubic-bezier(0, 0, 0.2, 1), transform 210ms cubic-bezier(0, 0, 0.2, 1);
+}
+.rsn-modal-route-exit {
+	opacity: 1;
+	transform: scale(1);
+}
+.rsn-modal-route-exit-active {
+	opacity: 0;
+	transform: scale(0.92);
+	transition: opacity 210ms cubic-bezier(0, 0, 0.2, 1), transform 210ms cubic-bezier(0, 0, 0.2, 1);
 }
