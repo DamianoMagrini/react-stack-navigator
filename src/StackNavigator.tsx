@@ -2,13 +2,12 @@ import React, { ReactChild } from 'react';
 import { createPortal } from 'react-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import '../src/styles.css';
-import { RouteOptions, StackNavigatorContext } from './StackNavigatorContext';
+import { StackNavigatorContext } from './StackNavigatorContext';
 
 interface StackEntry {
 	child: ReactChild;
 	resolve: (result: any) => void;
 	isModal: boolean;
-	title?: string;
 }
 
 export interface StackNavigatorProps {
@@ -57,18 +56,11 @@ export class StackNavigator extends React.Component<StackNavigatorProps, StackNa
 		});
 	};
 
-	private push = (child: ReactChild, options?: RouteOptions) => {
+	private push = (child: ReactChild, isModal: boolean = false) => {
 		this.lastPopWasProgrammatic = true;
 		this.lastHistoryIndex++;
 		window.location.hash = this.lastHistoryIndex.toString();
-		return new Promise<any>((resolve) =>
-			this.pushRoute({
-				child,
-				resolve,
-				isModal: options?.isModal ?? false,
-				title: options?.title,
-			}),
-		);
+		return new Promise<any>((resolve) => this.pushRoute({ child, resolve, isModal }));
 	};
 	private pop = (result?: any) => {
 		this.lastPopWasProgrammatic = true;
@@ -99,7 +91,6 @@ export class StackNavigator extends React.Component<StackNavigatorProps, StackNa
 										pop: this.pop,
 										canPop: true,
 										isModal: route.isModal,
-										routeTitle: route.title,
 									}}>
 									<div className='rsn-route' style={{ zIndex: i + 1000 }}>
 										{route.child}
