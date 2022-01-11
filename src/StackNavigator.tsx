@@ -2,7 +2,7 @@ import React, { ReactChild } from 'react';
 import { createPortal } from 'react-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import '../src/styles.css';
-import { StackNavigatorContext } from './StackNavigatorContext';
+import { StackNavigatorContext } from './StackNavigatorContext.js';
 
 interface StackEntry {
 	child: ReactChild;

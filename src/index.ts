@@ -1,3 +1,3 @@
-export * from './StackNavigator';
-export * from './StackNavigatorContext';
-export * from './useStackNavigator';
+export * from './StackNavigator.js';
+export * from './StackNavigatorContext.js';
+export * from './useStackNavigator.js';
